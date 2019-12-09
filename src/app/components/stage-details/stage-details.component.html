@@ -1,0 +1,45 @@
+<div class="stageDetails">
+        <div class="stageDetails__name" *ngIf="selectedStage">
+                <mat-form-field class="col-sm-6">
+                         <input matInput placeholder="Stage Name" id="stageName" [(ngModel)]="selectedStage.name">
+                </mat-form-field>
+                <button  mat-raised-button color="primary" (click)="saveStage()" title="Save {{selectedStage.name}}"><i class="material-icons">save</i></button>
+        </div>
+        <div class="stageDetails__steps" *ngIf="selectedStage">
+                <div class="stageDetails__steps__container">
+                        <div>
+                                <mat-form-field class="col-sm-12">
+                                                <input matInput type="text" placeholder="Search stage step" [(ngModel)]="stageStepName">
+                                </mat-form-field>
+                         </div>
+                        <div  class="stageDetails__steps__container__stagesteps" dragula="Steps" id="leftSteps" [(dragulaModel)]="selectedStage.steps">
+                                <div class="stageDetails__steps__container__stagesteps__item" [ngStyle]="{'background':getStageColor(step.name)}" *ngFor="let step of selectedStage.steps|stepfilter:stageStepName;let j=index;">
+                                        <i class="fa fa-times stageDetails__steps__container__stagesteps__item__close" (click)="removeStagesStep(j)" aria-hidden="true"></i>   
+                                         {{step.name}}
+                                </div>
+                        </div>
+                </div>
+                <div class="stageDetails__steps__list">
+                        <!-- <div class="input-group mb-3 input-group-sm">
+                               <input type="text" class="form-control" placeholder="Search step by name" [(ngModel)]="stepName">
+                               <div class="input-group-prepend">
+                                    <span class="input-group-text">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                    </span>
+                                </div>
+                        </div> -->
+                        <div>
+                                <mat-form-field class="col-sm-12">
+                                        <input matInput type="text" placeholder="Search step by name" [(ngModel)]="stepName">
+                                </mat-form-field>
+                        </div>
+                        <div class="stageDetails__steps__list__container" dragula="Steps" id="rightSteps" [(dragulaModel)]="listOfSteps">
+                                <div class="stageDetails__steps__list__container__item"
+                                     [ngStyle]="{'background':getStageColor(step.name)}" 
+                                     *ngFor="let step of listOfSteps|stepfilter:stepName;let j=index;">
+                                    {{step.name}}
+                                </div>
+                        </div>
+                </div>
+        </div>
+    </div>

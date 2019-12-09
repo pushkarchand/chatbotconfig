@@ -1,0 +1,45 @@
+<div class="stageDetails">
+        <div class="stageDetails__header" *ngIf="selectedFlow">
+               <div class="stageDetails__header__name">
+                        <mat-form-field class="col-sm-6">
+                                <input matInput id="flowName" placeholder="Flow Name" [(ngModel)]="selectedFlow.name" name="flowname">
+                        </mat-form-field>
+               </div>
+                <div class="stageDetails__header__action">
+                        <button mat-raised-button color="primary" (click)="saveFlow()" title="Save {{selectedFlow.name}}">
+                                <i class="material-icons" aria-hidden="true">save</i>
+                        </button>
+                        <button mat-raised-button color="primary" (click)="exportFlow()" title="Download {{selectedFlow.name}}">
+                                <i class="material-icons" aria-hidden="true">cloud_download</i>
+                        </button>
+                </div>
+            
+        </div>
+        <div class="stageDetails__stages" *ngIf="selectedFlow">
+                <div class="stageDetails__stages__container">
+                        <div>
+                                <mat-form-field class="col-sm-12">
+                                        <input matInput id="searchflowName" placeholder="Search stage" [(ngModel)]="searchFlowStageName" name="searchflowname">
+                                </mat-form-field>
+                         </div>
+                        <div  class="stageDetails__stages__container__stagesteps" dragula="flows" id="left" [(dragulaModel)]="selectedFlow.stages">
+                                <div class="stageDetails__stages__container__stagesteps__item" [ngStyle]="{'background':getStageColor(stage.name)}"  *ngFor="let stage of selectedFlow.stages|stepfilter:searchFlowStageName;let j=index;">
+                                        <i class="material-icons stageDetails__stages__container__stagesteps__item__close" (click)="removeFlowStage(j)" aria-hidden="true">close</i>   
+                                         {{stage.name}}
+                                </div>
+                        </div>
+                </div>
+                <div class="stageDetails__stages__list">
+                        <div>
+                                <mat-form-field class="col-sm-12">
+                                        <input matInput id="searchflowName" placeholder="Search stage" [(ngModel)]="searchStageName" name="searcgstageName">
+                                </mat-form-field>
+                        </div>
+                        <div class="stageDetails__stages__list__container" dragula="flows" id="right" [(dragulaModel)]="listOfStages">
+                                <div class="stageDetails__stages__list__container__item" [ngStyle]="{'background':getStageColor(stage.name)}" *ngFor="let stage of listOfStages|stepfilter:searchStageName;let j=index;">
+                                    {{stage.name}}
+                                </div>
+                        </div>
+                </div>
+        </div>
+    </div>

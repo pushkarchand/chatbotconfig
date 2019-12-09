@@ -1,0 +1,82 @@
+.stepDetails{
+    flex-basis:75%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    &__header{
+        display: flex;
+        padding: 10px 10px;
+        justify-content: space-between;
+        font-size: 14px;
+        position: relative;
+        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        &__title{
+            flex-basis: 85%;
+            display: flex;
+        }
+        &__btn{
+            flex-basis: 15%;
+            display: flex;
+            justify-content: space-around;
+
+        }
+    }
+    &__info{
+         display: flex;
+        padding: 0 25px;
+        flex-direction:column;
+    }
+    &__actions{
+        height: 100%;
+        display: flex;
+        flex: 1 1 0;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        flex-direction: column;
+        &__item{
+            padding: 20px 20px;
+            margin: 10px 10px;
+            display: flex;
+            flex-direction: column;
+            justify-items: center;
+            box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+            &__name{
+                display: flex;
+                padding: 10px 10px;
+                justify-content: space-between;
+                font-size: 14px;
+                position: relative;
+                align-items: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+            &__messages{
+                padding: 0 10px;
+                &__text{
+                    display: flex;
+                    justify-content: space-between;
+                    flex-direction: row;
+                    margin: 10px 0;
+                    padding: 10px 10px;
+                    box-shadow: 0 1px 6px 0 rgba(0,0,0,0.3);
+                    &__message{
+                        flex-basis: 80%;
+                        display: flex;
+                        align-items: center;
+                    }
+                    &__btn{
+                        display: flex;
+                        font-size: 16px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.closeBtn{
+    outline: none;
+}

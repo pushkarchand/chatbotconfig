@@ -1,0 +1,99 @@
+.main{
+    display: flex;
+    flex-direction: column;
+    height:100%;
+    &__header{
+        display: flex;
+        padding: 10px 10px;
+        box-shadow: 0 1px 6px 0 rgba(32, 33, 36, .28);
+        justify-content: center;
+        font-size: 14px;
+        position: relative;
+        align-items: center;
+    }
+    &__body{
+        display: flex;
+        flex: 1 1 0;
+        overflow-y: auto;
+        scroll-behavior: smooth;
+        flex-direction: column;
+    }
+}
+
+::ng-deep router-outlet + *:not(nav){
+    height: 100%;
+}
+
+
+.wrapper {
+    position: relative;
+    top: 0;
+    height: 100vh;
+}
+
+.sidebar {
+    display: block;
+    z-index: 1030;
+    width:80px;
+    position: fixed;
+    top: 0;
+    height: 100%;
+    bottom: 0;
+    left: 0;
+    transition-property: top,bottom,width;
+    transition-duration: .2s,.2s,.35s;
+    transition-timing-function: linear,linear,ease;
+    background: #66615B;
+    color:#fff;
+    &__container{
+        &__list{
+            padding: 0;
+            &__item{
+                padding: 0;
+                display: flex;
+                cursor: pointer;
+                z-index: 1040;
+                border-bottom: 0.4px solid #e2e2e2;
+                position: relative;
+                &__title{
+                    display: none;
+                    font-size: 16px;
+                    cursor: pointer;
+                    padding:15px 0;
+                }
+                &__icon{
+                    padding:15px 0 15px 25px;
+                }
+                &__arrow{
+                    position: absolute;
+                    right: -25px;
+                    font-size: 60px;
+                    top: 0;
+                }
+            }
+        }
+    }
+}
+
+.sidebar:hover {
+    width: 260px;
+}
+
+.sidebar:hover  .sidebar__container__list__item__title{
+    display: block;
+    padding-left: 35px;
+}
+
+.main-panel {
+    position: relative;
+    float: right;
+    width: calc(100% - 80px);
+    background-color: #f4f3ef;
+    transition: all .5s cubic-bezier(.685,.0473,.346,1);
+    height: 100%;
+}
+
+.active{
+    background: #31ad68;
+    color:#fff;
+}

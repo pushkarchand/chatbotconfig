@@ -1,0 +1,30 @@
+<div class="landingpage">
+        <div class="landingpage__item" (click)="navigate('steps')">
+                <div class="landingpage__item__icon">
+                        <i class="material-icons">format_list_bulleted</i>
+                </div>
+                <div class="landingpage__item__title">
+                        <div class="landingpage__item__title__count"> {{steps.length}}</div>    
+                        <div class="landingpage__item__title__name">Steps</div>
+                </div>
+        </div>
+        <div class="landingpage__item" (click)="navigate('stages')">
+                <div class="landingpage__item__icon">
+                        <i class="material-icons">library_books</i>
+                </div>
+                <div class="landingpage__item__title">
+                        <div class="landingpage__item__title__count"> {{stages.length}}</div>    
+                        <div class="landingpage__item__title__name">Stages</div>
+                </div>
+        </div>
+        <div class="landingpage__item" (click)="navigate('flows')">
+            <div class="landingpage__item__icon">
+                    <i class="material-icons">widgets</i>
+                   
+            </div>
+            <div class="landingpage__item__title">
+                <div class="landingpage__item__title__count"> {{flows.length}}</div>    
+                <div class="landingpage__item__title__name">Flows</div>
+            </div>
+        </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="stagesContainer">
+        <div class="stagesContainer__section">
+                <div class="stagesContainer__section__header">
+                        <div><h3>Stages</h3></div>
+                        <div>
+                            <button  mat-raised-button color="primary" (click)="openAddNewStage()">
+                                <i class="fa fa-plus"></i>
+                             </button>
+                    </div>
+                </div>
+                <div class="stagesContainer__section__stages">
+                        <div class="stagesContainer__section__stages__item" *ngFor="let stage of listOfStages;let i=index;">
+                                <i class="material-icons stagesContainer__section__stages__item__edit" (click)="editStage(stage.id)" aria-hidden="true">edit</i>
+                                <i class="material-icons stagesContainer__section__stages__item__delete" (click)="deleteStage(i)" aria-hidden="true">close</i>
+                                <img src="../../../assets/assets/default.jpg"  class="stagesContainer__section__stages__item__image">
+                                <div class="stagesContainer__section__stages__item__name">{{stage.name}}</div>
+                                
+                        </div>
+                </div>
+        </div>
+</div>
+
+
+<ng-template #stagecontent let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Add new Stage</h4>
+        <button type="button" class="closeBtn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+            <form [formGroup]="stageForm" (ngSubmit)="AddnewStage()">
+                <mat-form-field class="col-sm-12">
+                        <input type="text" matInput id="stageName"  formControlName="name" placeholder="Step Name" name="stageName">
+                </mat-form-field>
+                <button type="submit" class="btn btn-primary" [disabled]="stageForm.invalid">Submit</button>
+            </form>
+    </div>
+</ng-template>

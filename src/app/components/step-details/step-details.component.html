@@ -1,0 +1,107 @@
+<div class="stepDetails">
+        <div class="stepDetails__header" *ngIf="selectedStep">
+                <div class="stepDetails__header__title">
+                        <!-- <div class="form-group col-sm-6">
+                                <label for="exampleInputPassword1">Step Name</label>
+                                <input type="text" class="form-control" id="stepName" placeholder="Step Name" [(ngModel)]="selectedStep.name">
+                         </div> -->
+                         <mat-form-field class="col-sm-6">
+                                        <input matInput name="stepname" placeholder="Step Name" id="stepName" [(ngModel)]="selectedStep.name">
+                        </mat-form-field>
+                </div>
+                <div class="stepDetails__header__btn">
+                    <button  mat-raised-button color="primary" (click)="openAddNewAction()"><i class="material-icons">create_new_folder</i></button>
+                    <button  mat-raised-button color="primary" (click)="savestep()" title="Save {{selectedStep.name}}"><i class="material-icons">save</i></button>
+                </div>
+        </div>
+         <div class="stepDetails__info">
+                <div>** use _*xxx*_ for  <b>xxxx</b></div>
+                <div>** use \n for new line</div>
+        </div>
+        <div class="stepDetails__actions" *ngIf="selectedStep">
+                <div class="stepDetails__actions__item" *ngFor="let action of selectedStep.actions;let j=index;">
+                        <div class="stepDetails__actions__item__name">
+                                <div><h4>{{action.name}}</h4></div>
+                                <div>
+                                    <button mat-flat-button (click)="openAddNewMessage(j)" *ngIf="!action.message.isTemplate">
+                                                <i class="material-icons">control_point</i>
+                                    </button>
+                                    <button mat-flat-button (click)="editAction(j)" title="Edit {{action.name}}">
+                                                <i class="material-icons">edit</i>
+                                    </button>
+                                    <button mat-flat-button (click)="deleteAction(j)" title="Edit {{text}}">
+                                                <i class="material-icons">close</i>
+                                    </button>
+                                </div>
+                        </div>
+                        <div class="stepDetails__actions__item__messages">
+                                <ul class="stepDetails__actions__item__messages">
+                                        <li class="stepDetails__actions__item__messages__text" *ngFor="let text of action.message.texts;let k=index;">
+                                               <div [innerHTML]="getMessageText(text)" class="stepDetails__actions__item__messages__text__message"></div>
+                                                <div class="stepDetails__actions__item__messages__text__btn">
+                                                        <button mat-flat-button (click)="editMessage(k,j)" title="Edit {{text}}">
+                                                                <i class="material-icons">edit</i>
+                                                        </button>
+                                                        <button mat-flat-button (click)="deletemessage(action,k)" title="Edit {{text}}">
+                                                                <i class="material-icons">close</i>
+                                                        </button>
+                                                </div>
+                                        </li>
+                                </ul>
+                        </div>
+                </div>
+        </div>
+</div>
+
+
+<ng-template #actioncontent let-modal>
+                <div class="modal-header">
+                    <h4 class="modal-title">Action</h4>
+                    <button type="button" class="closeBtn close" aria-label="Close" (click)="closeActionModal()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <form [formGroup]="actionForm" (ngSubmit)="addnewaction()">
+                            <div class="form-group">
+                              <label for="actionname">Action Name:</label>
+                              <select class="form-control" id="actionname" id="actionname" formControlName="name" placeholder="Action type">
+                                  <option *ngFor="let action of actionTypes|keyvalue;" [value]="action.value">{{action.value}}</option>
+                              </select>
+                            </div>
+                            <!-- <div class="form-group form-check">
+                              <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" formControlName="isTemplate" name="isTemplate"> Is template
+                              </label>
+                            </div> -->
+
+                            <mat-slide-toggle class="col-sm-12" color="primary" formControlName="isTemplate" name="isTemplate">Is template</mat-slide-toggle>
+                            <!-- <div class="form-group" *ngIf="actionForm.value.isTemplate">
+                                    <label for="templateName">Template Name:</label>
+                                     <input type="text" class="form-control" id="templateName" formControlName="message" placeholder="Template Name" name="templateName">
+                            </div> -->
+                            <mat-form-field class="col-sm-12" *ngIf="actionForm.value.isTemplate">
+                                        <input matInput name="stepname" id="templateName" formControlName="message" placeholder="Template Name" name="templateName">
+                           </mat-form-field>
+                            <button type="submit" class="btn btn-primary" [disabled]="actionForm.invalid">Submit</button>
+                        </form>
+                </div>
+</ng-template>
+        
+        
+<ng-template #messagecontent let-modal>
+<div class="modal-header">
+        <h4 class="modal-title">Message</h4>
+        <button type="button" class="closeBtn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+</div>
+<div class="modal-body">
+        <form [formGroup]="messageForm" (ngSubmit)="addNewMessage()">
+                <mat-form-field class="col-sm-12">
+                        <textarea type="text" matInput  type="text" id="messageText"  formControlName="text" rows="4" cols="50" placeholder="message text" name="messageText"></textarea>
+                </mat-form-field>
+                <button type="submit" class="btn btn-primary" [disabled]="messageForm.invalid">Submit</button>
+        </form>
+</div>
+</ng-template>

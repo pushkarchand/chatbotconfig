@@ -1,0 +1,38 @@
+<div class="mainContainer">
+        <div class="mainContainer__section">
+                <div class="mainContainer__section__header">
+                        <div><h3>flows</h3></div>
+                        <div>
+                            <button mat-raised-button color="primary" (click)="openAddNewFlow()">
+                                <i class="fa fa-plus"></i>
+                             </button>
+                    </div>
+                </div>
+                <div class="mainContainer__section__flows">
+                    <div class="mainContainer__section__flows__item" *ngFor="let flow of listOfflows;let i=index;">
+                             <i class="material-icons mainContainer__section__flows__item__edit" aria-hidden="true" (click)="editflow(flow.id)">edit</i>    
+                             <i class="material-icons mainContainer__section__flows__item__delete" aria-hidden="true" (click)="deleteflow(i)">close</i>    
+                              {{flow.name}}    
+                        </div>
+                </div>
+        </div>
+</div>
+
+
+<ng-template #flowContent let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Flow</h4>
+        <button type="button" class="closeBtn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+            <form [formGroup]="flowForm" (ngSubmit)="addnewFlow()">
+                <div class="form-group">
+                  <label for="flowName">Flow Name:</label>
+                  <input type="text" class="form-control" id="flowName"  formControlName="name" placeholder="Step Name" name="flowName">
+                </div>
+                <button type="submit" class="btn btn-primary" [disabled]="flowForm.invalid">Submit</button>
+            </form>
+    </div>
+  </ng-template>
