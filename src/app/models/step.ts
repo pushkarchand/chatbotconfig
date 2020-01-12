@@ -1,7 +1,8 @@
 import * as uuid from 'uuid';
 export class Step{
-    constructor(public name:string,public actions:Action[],public id:string=uuid.v4()){}
+    constructor(public name:string,public actions:Action[],public _id:string=''){}
 }
+
 
 export class Action{
     constructor(public name:string,public message:Message){}

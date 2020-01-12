@@ -10,9 +10,9 @@
                 </div>
                 <div class="mainContainer__section__steps">
                     <div class="mainContainer__section__steps__item" *ngFor="let step of listOfSteps;let i=index;">
-                             <i class="material-icons mainContainer__section__steps__item__edit" aria-hidden="true" (click)="editStep(step.id)">edit</i>    
+                             <i class="material-icons mainContainer__section__steps__item__edit" aria-hidden="true" (click)="editStep(step._id)">edit</i>    
                              <i class="material-icons mainContainer__section__steps__item__delete" aria-hidden="true" (click)="deleteStep(i)">close</i>
-                              {{step.name}}    
+                              {{step.name}}
                         </div>
                 </div>
         </div>

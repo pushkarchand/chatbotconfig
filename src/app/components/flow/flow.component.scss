@@ -16,11 +16,11 @@
         flex-wrap: wrap;
         &__name{
             display: flex;
-            flex-basis: 90%;
+            flex-basis: 85%;
         }
         &__action{
             display: flex;
-            flex-basis: 10%;
+            flex-basis: 15%;
             justify-content: space-around;
         }
     }

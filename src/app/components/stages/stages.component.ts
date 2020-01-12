@@ -1,5 +1,4 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Configservice } from '../../services/configuration.service';
 import {
   FormBuilder,
   FormGroup,
@@ -11,6 +10,7 @@ import { Stage } from '../../models/stage';
 import { Step } from '../../models/step';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { StageService } from '../../services/stage.service';
 
 @Component({
   selector: 'app-stages',
@@ -26,13 +26,21 @@ public selectedStage:Stage;
 public listOfSteps:Step[];
 subs = new Subscription();
   constructor(private modalService: NgbModal, private fb: FormBuilder,
-              public configurationService:Configservice,private router:Router) {
+              private router:Router,private _stageService:StageService) {
   }
 
   ngOnInit() {
-    this.listOfStages=this.configurationService.getStages();
+    this.listOfStages=[];
+    this.enumerateStages();
     this.selectedStage=null;
     this.initalizeStageForm();
+  }
+
+  private enumerateStages():void{
+      this._stageService.enumerateStages()
+      .subscribe(stagesList=>{
+        this.listOfStages=stagesList;
+      })
   }
 
 
@@ -48,17 +56,22 @@ subs = new Subscription();
 
   public AddnewStage():void{
       let newStage:Stage=new Stage(this.stageForm.value.name,[]);
-      this.configurationService.createNewStage(newStage);
-      this.listOfStages=this.configurationService.getStages();
-      this.modalService.dismissAll();
-      this.initalizeStageForm();
+     this._stageService.createStage(newStage)
+     .subscribe(stageResponse=>{
+        this.enumerateStages();
+        this.modalService.dismissAll();
+        this.initalizeStageForm();
+     })
   }// public AddnewStage():void
 
   public deleteStage(argIndex:number):void{
     const confirmation=confirm(`Are you sure you want to delte ${this.listOfStages[argIndex].name}`);
     if(confirmation){
-      this.configurationService.deleteStage(argIndex);
-      this.listOfStages=this.configurationService.getStages();
+      const stageId=this.listOfStages[argIndex]._id;
+      this._stageService.deleteStage(stageId)
+        .subscribe(response=>{
+          this.enumerateStages();
+        })
     }
   }// public deleteStage(argIndex:number):void
 

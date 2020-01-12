@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { DragulaService } from 'ng2-dragula';
-import { Configservice } from '../../services/configuration.service';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Stage } from '../../models/stage';
 import { Flow } from '../../models/flow';
 import { Step } from '../../models/step';
 import * as utils from '../../utils/colorCodeGenerator';
+import { FlowService } from '../../services/flow.service';
+import { StageService } from '../../services/stage.service';
 
 @Component({
   selector: 'app-flow',
@@ -20,9 +21,9 @@ export class FlowComponent implements OnInit {
   public searchFlowStageName:string;
   public searchStageName:string;
 
-    constructor(public dragulaService: DragulaService,public configurationService:Configservice,
-      private router:Router,
-      private activatedRoute:ActivatedRoute) {
+    constructor(public dragulaService: DragulaService,
+      private router:Router,private _stageService:StageService,
+      private activatedRoute:ActivatedRoute,private _flowService:FlowService) {
         const bag: any = this.dragulaService.find('flows'); 
         if (bag !== undefined) { 
             this.dragulaService.destroy('flows');
@@ -45,22 +46,39 @@ export class FlowComponent implements OnInit {
       this.searchFlowStageName='';
       this.searchStageName='';
       this.listOfStages=[];
-      this.listOfStages=this.configurationService.getStages();
+      this.enumerateStages();
       let id=this.activatedRoute.snapshot.params['id'];
-      this.selectedFlow=this.configurationService.getFlowDetails(id);
-      if(!this.selectedFlow){
-        this.router.navigate(['/steps'])
+      if(!id){
+        this.router.navigate(['/flows'])
       }
+      this.getFlowDetails(id);
       this.getTargetListOfStages();
+    }
+
+
+    private enumerateStages():void{
+        this._stageService.enumerateStages()
+        .subscribe(stagesListResponse=>{
+          this.listOfStages=stagesListResponse;
+          this.getTargetListOfStages();
+        })
+    }
+
+    private getFlowDetails(argId:string):void{
+        this._flowService.flowdetails(argId)
+        .subscribe(flowDetailsResponse=>{
+          this.selectedFlow=flowDetailsResponse;
+          this.getTargetListOfStages();
+        })
     }
 
     private getTargetListOfStages():void{
         let flowStageId=[];
         this.selectedFlow.stages.map(stage=>{
-            flowStageId.push(stage.id);
+            flowStageId.push(stage._id);
         })
        let targetList=this.listOfStages.filter(stage=>{
-            return flowStageId.indexOf(stage.id)===-1;
+            return flowStageId.indexOf(stage._id)===-1;
         })
         this.listOfStages=targetList;
     }
@@ -71,8 +89,10 @@ export class FlowComponent implements OnInit {
     }// public removeFlowStage(argIndex):void
   
     public saveFlow(): void {
-      this.configurationService.saveFlow(this.selectedFlow);
-      alert(`Successfully saved ${this.selectedFlow.name}`);
+      this._flowService.updateFlow(this.selectedFlow)
+      .subscribe(flowResponse=>{
+        alert(`Successfully saved ${this.selectedFlow.name}`);
+      })
     }
 
     public exportFlow(){

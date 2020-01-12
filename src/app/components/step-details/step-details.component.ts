@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { NgbModal, NgbModalConfig } from "@ng-bootstrap/ng-bootstrap";
-import { Step, Action, Message } from "../../models/step";
+import { Step, Action, Message } from '../../models/step';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import {
@@ -9,8 +9,9 @@ import {
   FormControl,
   Validators
 } from "@angular/forms";
-import { Configservice } from "src/app/services/configuration.service";
 import { StepActionType } from "../../models/actionTypes";
+import { StepService } from '../../services/step.service';
+
 @Component({
   selector: 'app-step-details',
   templateUrl: './step-details.component.html',
@@ -28,10 +29,10 @@ export class StepDetailsComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
-    public configurationService: Configservice,
     private config: NgbModalConfig,
     private router:Router,
-    private activatedRoute:ActivatedRoute
+    private activatedRoute:ActivatedRoute,
+    private _stepService:StepService
   ) {
     this.config.backdrop = "static";
     this.config.keyboard = false;
@@ -42,12 +43,19 @@ export class StepDetailsComponent implements OnInit {
     this.selectedMessageIndex = -1;
     this.actionTypes = StepActionType;
     let id=this.activatedRoute.snapshot.params['id'];
-      this.selectedStep=this.configurationService.getStepDetails(id);
-      if(!this.selectedStep){
+      if(!id){
         this.router.navigate(['/steps'])
       }
+      this.getStepDetails(id);
     this.initializeActionForm();
     this.intializeMessageForm();
+  }
+
+  public getStepDetails(argId:string):void{
+      this._stepService.stepDetails(argId)
+      .subscribe(response=>{
+        this.selectedStep=response;
+      })
   }
 
   private intializeMessageForm(argMessage: string = null): void {
@@ -126,8 +134,10 @@ export class StepDetailsComponent implements OnInit {
   } // public getMessageText(argtext)
 
   public savestep(): void {
-    this.configurationService.saveStep(this.selectedStep);
-    alert(`Successfully saved ${this.selectedStep.name}`);
+    this._stepService.updateStep(this.selectedStep)
+    .subscribe(response=>{
+      alert(`Successfully saved ${this.selectedStep.name}`);
+    })
   } // public savestep(): void
 
   public editAction(argIndex): void {

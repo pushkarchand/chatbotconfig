@@ -10,7 +10,7 @@
                 </div>
                 <div class="mainContainer__section__flows">
                     <div class="mainContainer__section__flows__item" *ngFor="let flow of listOfflows;let i=index;">
-                             <i class="material-icons mainContainer__section__flows__item__edit" aria-hidden="true" (click)="editflow(flow.id)">edit</i>    
+                             <i class="material-icons mainContainer__section__flows__item__edit" aria-hidden="true" (click)="editflow(flow._id)">edit</i>    
                              <i class="material-icons mainContainer__section__flows__item__delete" aria-hidden="true" (click)="deleteflow(i)">close</i>    
                               {{flow.name}}    
                         </div>

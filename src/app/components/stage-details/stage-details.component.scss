@@ -21,6 +21,7 @@
         flex-direction: row;
         justify-content: space-around;
         flex: 1 1 0;
+        overflow: auto;
         &__container{
             flex-basis:75%;
             height: 100%;

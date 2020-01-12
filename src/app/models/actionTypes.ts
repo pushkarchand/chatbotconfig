@@ -17,6 +17,8 @@ export enum StepActionType{
         MANUALENTRY="ManualEntry",
        MANUALENTRYRETRY ="ManualEntryRetry",
        NETBANKING="Netbanking",
-       WAIT="Wait"
+       WAIT="Wait",
+       DECLINED="Declined",
+       REFERRED="Referred"
 
 }

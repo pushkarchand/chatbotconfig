@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  step:'http://localhost:3000/steps',
+  stage:'http://localhost:3000/stages',
+  flow:'http://localhost:3000/flows',
 };
 
 /*

@@ -10,7 +10,7 @@
                 </div>
                 <div class="stagesContainer__section__stages">
                         <div class="stagesContainer__section__stages__item" *ngFor="let stage of listOfStages;let i=index;">
-                                <i class="material-icons stagesContainer__section__stages__item__edit" (click)="editStage(stage.id)" aria-hidden="true">edit</i>
+                                <i class="material-icons stagesContainer__section__stages__item__edit" (click)="editStage(stage._id)" aria-hidden="true">edit</i>
                                 <i class="material-icons stagesContainer__section__stages__item__delete" (click)="deleteStage(i)" aria-hidden="true">close</i>
                                 <img src="../../../assets/assets/default.jpg"  class="stagesContainer__section__stages__item__image">
                                 <div class="stagesContainer__section__stages__item__name">{{stage.name}}</div>

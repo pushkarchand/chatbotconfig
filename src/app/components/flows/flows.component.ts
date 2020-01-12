@@ -7,8 +7,8 @@ import {
   FormControl,
   Validators
 } from "@angular/forms";
-import { Configservice } from "src/app/services/configuration.service";
 import { Router } from '@angular/router';
+import { FlowService } from '../../services/flow.service';
 @Component({
   selector: 'app-flows',
   templateUrl: './flows.component.html',
@@ -21,7 +21,7 @@ export class FlowsComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
-    public configurationService: Configservice,
+    public _flowService: FlowService,
     private config: NgbModalConfig,
     private router: Router
   ) {
@@ -30,8 +30,16 @@ export class FlowsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.listOfflows = this.configurationService.getFlows();
+    this.listOfflows = [];
+    this.enumerateFlows();
     this.initializeStepForm();
+  }
+
+  private enumerateFlows():void{
+    this._flowService.enumerateFlows()
+    .subscribe(flowListResponse=>{
+      this.listOfflows=flowListResponse;
+    })
   }
 
   private initializeStepForm() : void {
@@ -47,18 +55,22 @@ export class FlowsComponent implements OnInit {
 
   public addnewFlow(): void {
     let newFlow: Flow = new Flow(this.flowForm.value.name, []);
-    console.log(newFlow);
-    this.configurationService.createNewflow(newFlow);
-    this.listOfflows = this.configurationService.getFlows();
+   this._flowService.createFlow(newFlow)
+   .subscribe(flowResponse=>{
     this.modalService.dismissAll();
     this.initializeStepForm();
+    this.enumerateFlows();
+   })
   } // public addnewFlow(): void
 
   public deleteflow(argIndex:number):void{
     const confirmation=confirm(`Are you sure you want to delte ${this.listOfflows[argIndex].name}`);
     if(confirmation){
-      this.configurationService.deleteFlow(argIndex);
-      this.listOfflows=this.configurationService.getFlows();
+      let flowid=this.listOfflows[argIndex]._id;
+     this._flowService.deleteFlow(flowid)
+     .subscribe(flowResponse=>{
+       this.enumerateFlows();
+     })
     }
   }// public deleteflow(argIndex:number):void
 

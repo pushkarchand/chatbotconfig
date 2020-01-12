@@ -11,7 +11,6 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { StepsComponent } from './components/steps/steps.component';
 import { StagesComponent } from './components/stages/stages.component';
-import { Configservice } from './services/configuration.service';
 import{StepFilterByNamePipe} from './pipes/steppipe';
 import { StageDetailsComponent } from './components/stage-details/stage-details.component';
 import { StepDetailsComponent } from './components/step-details/step-details.component';
@@ -22,6 +21,10 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import {MatSelectModule} from '@angular/material/select';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { HttpClientModule } from '@angular/common/http';
+import { FlowService } from './services/flow.service';
+import { StageService } from './services/stage.service';
+import { StepService } from './services/step.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,9 +50,10 @@ import {MatSlideToggleModule} from '@angular/material/slide-toggle';
     MatButtonToggleModule,
     MatIconModule,
     MatSelectModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    HttpClientModule
   ],
-  providers: [Configservice],
+  providers: [StageService,StepService,FlowService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

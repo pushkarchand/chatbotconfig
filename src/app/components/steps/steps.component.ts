@@ -1,14 +1,14 @@
 import { Component, OnInit, ViewChild } from "@angular/core";
 import { NgbModal, NgbModalConfig } from "@ng-bootstrap/ng-bootstrap";
-import { Step} from "../../models/step";
+import { Step } from '../../models/step';
 import {
   FormBuilder,
   FormGroup,
   FormControl,
   Validators
 } from "@angular/forms";
-import { Configservice } from "src/app/services/configuration.service";
 import { Router } from '@angular/router';
+import { StepService } from '../../services/step.service';
 
 @Component({
   selector: "app-steps",
@@ -23,17 +23,25 @@ export class StepsComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
-    public configurationService: Configservice,
     private config: NgbModalConfig,
-    private router: Router
+    private router: Router,
+    private _setpService:StepService
   ) {
     this.config.backdrop = "static";
     this.config.keyboard = false;
   }
 
   ngOnInit() {
-    this.listOfSteps = this.configurationService.getSteps();
     this.initializeStepForm();
+    this.enumerateSteps();
+  }
+
+  private enumerateSteps():void{
+    this.listOfSteps=[];
+    this._setpService.enumerateSteps()
+    .subscribe(data=>{
+      this.listOfSteps=data;
+    })
   }
 
   private initializeStepForm() : void {
@@ -49,8 +57,10 @@ export class StepsComponent implements OnInit {
 
   public addnewStep(): void {
     let newStep: Step = new Step(this.stepForm.value.name, []);
-    this.configurationService.createNewStep(newStep);
-    this.listOfSteps = this.configurationService.getSteps();
+    this._setpService.createStep(newStep)
+      .subscribe(stepResponse=>{
+          this.enumerateSteps();
+      })
     this.modalService.dismissAll();
     this.initializeStepForm();
   } // public addnewStep(): void
@@ -62,8 +72,11 @@ export class StepsComponent implements OnInit {
   public deleteStep(argIndex:number):void{
     const response=confirm(`Are you sure do you want to delete ${this.listOfSteps[argIndex].name} step`);
     if(response){
-      this.configurationService.deleteStep(argIndex);
-      this.listOfSteps=this.configurationService.getSteps();
+        let stepId=this.listOfSteps[argIndex]._id;
+        this._setpService.deleteStep(stepId)
+        .subscribe(stepResponse=>{
+          this.enumerateSteps();
+        })
     }
     
   }// public deleteStep(argIndex:number):void
